@@ -107,6 +107,8 @@ class _DigitalClockState extends State<GandhiClock> {
     final year = _dateTime.year;
     final minute = DateFormat('mm').format(_dateTime);
     final fontSize = MediaQuery.of(context).size.width / 3.5;
+    final dWidth = MediaQuery.of(context).size.width;
+    final dHeight = MediaQuery.of(context).size.height;
     final offset = -fontSize / 7;
     bool hasexploded = false;
     // final defaultStyle = TextStyle(
@@ -124,7 +126,8 @@ class _DigitalClockState extends State<GandhiClock> {
 
     return Container(
       color: colors[_Element.background],
-      child: Stack(
+      child: 
+      Stack(
         children: <Widget>[
           // GestureDetector(
           //   onTap: () {
@@ -132,25 +135,23 @@ class _DigitalClockState extends State<GandhiClock> {
           //     // if(hasexploded)
           //   },
           // child:
-          // Positioned(
-            // left: 100,
-            // top: -5,
-            // child: 
-            Container(
-              width: 900,
-              height: 900,
+          // Rect.fromCenter(center: Offset(0,0),width: 500,height: 500),
+          Positioned.fill(
+            left: dWidth/15,
+            top: dHeight/9,
               child: FlareActor(
                 "assets/charkho.flr",
                 animation: "snip",
+                fit: BoxFit.cover,
                 // color: Colors.black,
               ),
-            ),
+          ),
           // ),
           // Positioned()
           // ),
-          Positioned(
-            left: 280,
-            top: 30,
+          Positioned.fill(
+            left: dWidth/2.3,
+            top: dHeight/15,
             child: Stack(
               children: <Widget>[
                 Row(
@@ -158,17 +159,31 @@ class _DigitalClockState extends State<GandhiClock> {
                     Text(
                       hour,
                       style: TextStyle(
-                          fontSize: 50,
+                          fontSize: dWidth/10,
                           color: Color(0xFF992505),
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
                       ":",
-                      style: TextStyle(fontSize: 50, color: Color(0xFF992505), fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: dWidth/10,
+                          color: Color(0xFF992505),
+                          fontWeight: FontWeight.bold),
                     ),
                     Text(
                       minute,
-                      style: TextStyle(fontSize: 50, color: Color(0xFF992505), fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: dWidth/10,
+                          color: Color(0xFF992505),
+                          fontWeight: FontWeight.bold),
+                    ),
+
+                    Text(
+                      "",
+                      style: TextStyle(
+                          fontSize: 60,
+                          color: Color(0xFF992505),
+                          fontWeight: FontWeight.bold),
                     ),
                     // Text(":"),
                     // Text(minute),
@@ -178,8 +193,8 @@ class _DigitalClockState extends State<GandhiClock> {
             ),
           ),
           Positioned(
-            left: 275,
-            top: 80,
+            left: dWidth/2.3,
+            top: dHeight/15+dWidth/10,
             child: Stack(
               children: <Widget>[
                 Row(
@@ -200,7 +215,10 @@ class _DigitalClockState extends State<GandhiClock> {
                     ),
                     Text(
                       month.toString(),
-                      style: TextStyle(fontSize: 25, color: Color(0xFF992505), fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 25,
+                          color: Color(0xFF992505),
+                          fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "/",
@@ -211,7 +229,10 @@ class _DigitalClockState extends State<GandhiClock> {
                     ),
                     Text(
                       year.toString(),
-                      style: TextStyle(fontSize: 25, color: Color(0xFF992505), fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 25,
+                          color: Color(0xFF992505),
+                          fontWeight: FontWeight.bold),
                     ),
                     // Text(":"),
                     // Text(minute),
