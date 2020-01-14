@@ -19,12 +19,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  # fonts:
-    # - family: PressStart2P
-      # fonts:
-        # - asset: third_party/PressStart2P-Regular.ttf
+  fonts:
+    - family: BebasNeue-Regular
+      fonts:
+        - asset: assets/fonts/BebasNeue-Regular.ttf
 
   assets:
     # - assets/mee6.png
     # - assets/explode.flr
     - assets/charkho.flr
+    - assets/texture.png

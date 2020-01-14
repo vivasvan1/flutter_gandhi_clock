@@ -13,19 +13,16 @@ import 'package:intl/intl.dart';
 enum _Element {
   background,
   text,
-  shadow,
 }
 
 final _lightTheme = {
-  _Element.background: Color(0x88ffffbd),
-  _Element.text: Colors.white,
-  _Element.shadow: Colors.black,
+  _Element.background: Color(0x99ffffbd),
+  _Element.text: Color(0xFF992505),
 };
 
 final _darkTheme = {
-  _Element.background: Color(0x88ffffbd),
-  _Element.text: Colors.white,
-  _Element.shadow: Color(0xFF174EA6),
+  _Element.background: Color(0xaaffffbd),
+  _Element.text: Color(0xFF992505),
 };
 
 /// A basic digital clock.
@@ -33,19 +30,33 @@ final _darkTheme = {
 /// You can do better than this!
 class GandhiClock extends StatefulWidget {
   const GandhiClock(this.model);
-
   final ClockModel model;
 
   @override
-  _DigitalClockState createState() => _DigitalClockState();
+  _GandhiClockState createState() => _GandhiClockState();
 }
 
-class _DigitalClockState extends State<GandhiClock> {
+class _GandhiClockState extends State<GandhiClock> {
   DateTime _dateTime = DateTime.now();
   Timer _timer;
+  double fontSize;
+  final _sizeKey = GlobalKey();
+
+//   _getSizes() {
+//     final RenderBox renderBoxRed = _sizeKey.currentContext.findRenderObject();
+//     final sizeRed = renderBoxRed.size;
+  // fontSize = sizeRed.width / 3.5;
+//     print("SIZE of Red: $sizeRed");
+//  }
+
+//   _afterLayout(_) {
+//     _getSizes();
+//     // _getPositions();
+//   }
 
   @override
   void initState() {
+    // WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     super.initState();
     widget.model.addListener(_updateModel);
     _updateTime();
@@ -102,141 +113,114 @@ class _DigitalClockState extends State<GandhiClock> {
         : _darkTheme;
     final hour =
         DateFormat(widget.model.is24HourFormat ? 'HH' : 'hh').format(_dateTime);
+    final ampm =
+        DateFormat(widget.model.is24HourFormat ? '' : 'a').format(_dateTime);
     final day = _dateTime.day;
     final month = _dateTime.month;
     final year = _dateTime.year;
     final minute = DateFormat('mm').format(_dateTime);
-    final fontSize = MediaQuery.of(context).size.width / 3.5;
-    final dWidth = MediaQuery.of(context).size.width;
-    final dHeight = MediaQuery.of(context).size.height;
-    final offset = -fontSize / 7;
-    bool hasexploded = false;
-    // final defaultStyle = TextStyle(
-    //   color: colors[_Element.text],
-    //   fontFamily: 'PressStart2P',
-    //   fontSize: fontSize,
-    //   shadows: [
-    //     Shadow(
-    //       blurRadius: 0,
-    //       color: colors[_Element.shadow],
-    //       offset: Offset(10, 0),
-    //     ),
-    //   ],
-    // );
-
+    fontSize = MediaQuery.of(context).size.width / 3;
+    final timeSize = fontSize / 2.5;
+    final ampmSize = fontSize / 6;
+    final dateSize = fontSize / 8;
+    final offsetH = fontSize / 3;
+    final offsetV = fontSize / 5;
     return Container(
+      key: _sizeKey,
       color: colors[_Element.background],
-      child: 
-      Stack(
+      child: Stack(
         children: <Widget>[
-          // GestureDetector(
-          //   onTap: () {
-          //     // print("asdf");
-          //     // if(hasexploded)
-          //   },
-          // child:
-          // Rect.fromCenter(center: Offset(0,0),width: 500,height: 500),
-          Positioned.fill(
-            left: dWidth/15,
-            top: dHeight/9,
-              child: FlareActor(
-                "assets/charkho.flr",
-                animation: "snip",
-                fit: BoxFit.cover,
-                // color: Colors.black,
-              ),
+          // OVERLAY TEXTURE IMAGE
+          Image(
+            image: AssetImage("assets/texture.png"),
+            fit: BoxFit.cover,
+            color: colors[_Element.background],
           ),
-          // ),
-          // Positioned()
-          // ),
-          Positioned.fill(
-            left: dWidth/2.3,
-            top: dHeight/15,
-            child: Stack(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text(
-                      hour,
-                      style: TextStyle(
-                          fontSize: dWidth/10,
-                          color: Color(0xFF992505),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      ":",
-                      style: TextStyle(
-                          fontSize: dWidth/10,
-                          color: Color(0xFF992505),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      minute,
-                      style: TextStyle(
-                          fontSize: dWidth/10,
-                          color: Color(0xFF992505),
-                          fontWeight: FontWeight.bold),
-                    ),
-
-                    Text(
-                      "",
-                      style: TextStyle(
-                          fontSize: 60,
-                          color: Color(0xFF992505),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    // Text(":"),
-                    // Text(minute),
-                  ],
-                )
-              ],
+          // CHARKHO FLARE
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            alignment: Alignment.bottomCenter,
+            child: FlareActor(
+              "assets/charkho.flr",
+              alignment: Alignment.bottomCenter,
+              animation: "snip",
+              fit: BoxFit.contain,
             ),
           ),
-          Positioned(
-            left: dWidth/2.3,
-            top: dHeight/15+dWidth/10,
+          // DATE
+          Container(
+            margin:
+                EdgeInsets.symmetric(horizontal: offsetH, vertical: offsetV),
             child: Stack(
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text(
-                      day.toString(),
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Color(0xFF992505),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "/",
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Color(0xFF992505),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      month.toString(),
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Color(0xFF992505),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "/",
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Color(0xFF992505),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      year.toString(),
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Color(0xFF992505),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    // Text(":"),
-                    // Text(minute),
-                  ],
+                Container(
+                  padding: widget.model.is24HourFormat
+                      ? EdgeInsets.fromLTRB(0, 0, 0, 0)
+                      : EdgeInsets.fromLTRB(0, 0, ampmSize * 1.1, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        day.toString() +
+                            "/" +
+                            month.toString() +
+                            "/" +
+                            year.toString(),
+                        style: TextStyle(
+                            fontFamily: "BebasNeue-Regular",
+                            fontSize: dateSize,
+                            color: colors[_Element.text],
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, dateSize / 2, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        hour,
+                        style: TextStyle(
+                            fontFamily: "BebasNeue-Regular",
+                            fontSize: timeSize,
+                            color: colors[_Element.text],
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        ":",
+                        style: TextStyle(
+                            height: 0.8,
+                            fontFamily: "BebasNeue-Regular",
+                            fontSize: timeSize,
+                            color: colors[_Element.text],
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        minute,
+                        style: TextStyle(
+                            // backgroundColor: Colors.black,
+                            fontFamily: "BebasNeue-Regular",
+                            fontSize: timeSize,
+                            color: colors[_Element.text],
+                            fontWeight: FontWeight.bold),
+                      ),
+                      widget.model.is24HourFormat
+                          ? Text("")
+                          : Text(
+                              " " + ampm,
+                              style: TextStyle(
+                                  // backgroundColor: Colors.black,
+                                  fontFamily: "BebasNeue-Regular",
+                                  fontSize: ampmSize,
+                                  height: 2.7,
+                                  color: colors[_Element.text],
+                                  fontWeight: FontWeight.bold),
+                            ),
+                    ],
+                  ),
                 )
               ],
             ),
