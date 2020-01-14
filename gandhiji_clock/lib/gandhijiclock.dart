@@ -119,23 +119,23 @@ class _GandhiClockState extends State<GandhiClock> {
     final month = _dateTime.month;
     final year = _dateTime.year;
     final minute = DateFormat('mm').format(_dateTime);
-    fontSize = MediaQuery.of(context).size.width / 3;
+    fontSize = MediaQuery.of(context).size.width / 3.3;
     final timeSize = fontSize / 2.5;
     final ampmSize = fontSize / 6;
     final dateSize = fontSize / 8;
-    final offsetH = fontSize / 3;
+    final offsetH = widget.model.is24HourFormat? fontSize / 3.2: fontSize/6;
     final offsetV = fontSize / 5;
     return Container(
       key: _sizeKey,
       color: colors[_Element.background],
       child: Stack(
         children: <Widget>[
-          // OVERLAY TEXTURE IMAGE
-          Image(
-            image: AssetImage("assets/texture.png"),
-            fit: BoxFit.cover,
-            color: colors[_Element.background],
-          ),
+          // // OVERLAY TEXTURE IMAGE
+          // Image(
+          //   image: AssetImage("assets/texture.png"),
+          //   fit: BoxFit.cover,
+          //   color: colors[_Element.background],
+          // ),
           // CHARKHO FLARE
           Container(
             margin: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
@@ -148,7 +148,7 @@ class _GandhiClockState extends State<GandhiClock> {
               fit: BoxFit.contain,
             ),
           ),
-          // DATE
+          // DATE AND TIME CONTAINER
           Container(
             margin:
                 EdgeInsets.symmetric(horizontal: offsetH, vertical: offsetV),
@@ -156,7 +156,7 @@ class _GandhiClockState extends State<GandhiClock> {
               children: <Widget>[
                 Container(
                   padding: widget.model.is24HourFormat
-                      ? EdgeInsets.fromLTRB(0, 0, 0, 0)
+                      ? EdgeInsets.fromLTRB(0, 0, 3, 0)
                       : EdgeInsets.fromLTRB(0, 0, ampmSize * 1.1, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,

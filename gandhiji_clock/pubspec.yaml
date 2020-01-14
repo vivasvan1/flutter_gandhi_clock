@@ -25,7 +25,4 @@ flutter:
         - asset: assets/fonts/BebasNeue-Regular.ttf
 
   assets:
-    # - assets/mee6.png
-    # - assets/explode.flr
     - assets/charkho.flr
-    - assets/texture.png
